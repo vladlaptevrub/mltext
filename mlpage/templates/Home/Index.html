@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <style>
+        .section a {
+	        color: black;
+	        text-transform: uppercase;
+	        text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: center;
+            padding-top: 3%;
+        }
+
+        .video-background {
+            background: #000;
+            position: fixed;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: -99;
+        }
+
+        .video-foreground,
+        .video-background iframe {
+            position: absolute;
+            top: -5%; left: -5%;
+            width: 110%; height: 110%;
+            pointer-events: none;
+        }
+        #vidtop-content {
+            top: 0;
+        }
+
+        body{
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <div class="video-foreground">
+            <iframe src="https://www.youtube.com/embed/k3dCXaKKx6Q?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=k3dCXaKKx6Q" 
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="section clearfix">
+        <div class="container" style="position: absolute; top: 20%; left: 25%; height: 50%; width: 50%;">
+            <div class="jumbotron" style="color:lemonchiffon">
+                <div class="title-text">
+                    <h2 style="color: limegreen"><b>МАШИННОЕ ОБУЧЕНИЕ</b></h2>
+                    <h3>
+                        Это одно из самых актуальных направлений в<br>
+                        современных технологиях
+                    </h3>
+                    <h5 style="color: dimgray">
+                        Курс направлен на ознакомление с <b style="color: limegreen">машинным обучением</b>. Пользователям<br>
+                        предоставляется <b style="color: limegreen">возможность изучения</b> данного направления и <b style="color: limegreen">практики</b> 
+                        полученных знаний.
+                    </h5>
+                    <p>
+                        <br>
+                    </p>
+                    <a class="btn btn-success" href="home" role="button" style="width: 180px; height: 50px">
+                        <h4 style="color:antiquewhite">
+                            <b>
+                                Открыть курс
+                            </b>
+                        </h4>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

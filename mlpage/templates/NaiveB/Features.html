@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Features</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+
+
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron">
+            <h2>Классификация</h2>
+            <div class="well" style="background-color: white">
+                <ul class="breadcrumb">
+                    <li><a href="../../home" style="color: limegreen">Домой</a></li>
+                    <li class="active" style="color: chartreuse">Классификация</li>
+                    <li><a href="../../naive_b/dataset" style="color: limegreen">Датасет</a></li>
+                    <li><a href="../../naive_b/tokenization" style="color: limegreen">Токенизация</a></li>
+                    <li><a href="../../naive_b/normalization" style="color: limegreen">Нормализация</a></li>
+                    <li class="active">Признаки</li>
+                    <li><a href="../../naive_b/classifications" style="color: limegreen">Классификаторы</a></li>
+                    <li><a href="../../naive_b/result" style="color: limegreen">Результат</a></li>
+                </ul>
+
+                <h3>Выбор признаков</h3>
+                <br/>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Тут мы будем выбирать признаки.
+                    <div class="well" style="min-height: 100px">
+                    	<h5>Массив токенов:</h5>
+                    	<div class="well" style="background-color: white">
+                    		<p style="color: green">{'фильм', 'просто', 'потрясающий', 'много', 'юмор', 'советовать', 'ходить', 'кино'}</p>
+                    	</div>
+                    </div>
+                </p>
+
+                <ul class="pager" style="font-size: small">
+                    <li><a href="../../home" style="color: green">Домой</a></li>
+                    <li><a href="../../naive_b/normalization" style="color: green">Назад</a></li>
+                    <li><a href="../../naive_b/classifications" style="color: green">Далее</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

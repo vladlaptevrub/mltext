@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Normalization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+
+
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron">
+             <h2>Классификация</h2>
+            <div class="well" style="background-color: white">
+                <ul class="breadcrumb">
+                    <li><a href="../../home" style="color: limegreen">Домой</a></li>
+                    <li class="active" style="color: chartreuse">Классификация</li>
+                    <li><a href="../../naive_b/dataset" style="color: limegreen">Датасет</a></li>
+                    <li><a href="../../naive_b/tokenization" style="color: limegreen">Токенизация</a></li>
+                    <li class="active">Нормализация</li>
+                    <li><a href="../../naive_b/features" style="color: limegreen">Признаки</a></li>
+                    <li><a href="../../naive_b/classifications" style="color: limegreen">Классификаторы</a></li>
+                    <li><a href="../../naive_b/result" style="color: limegreen">Результат</a></li>
+                </ul>
+
+                <h3>Приведение слов к нормальной форме</h3>
+                <br />
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Для начала, библиотека должна, как минимум, уметь приводить слово
+                    к нормальной форме (например, в ед.ч., И.п. для существительных) — для слова
+                    «ЛЮДЕЙ» она должна вернуть «ЧЕЛОВЕК».
+                </p>
+
+                <h4 style="font-family:'Times New Roman', Times, serif"><b>Пример:</b></h4>
+
+                <div class="well" style="min-height: 100px">
+                    
+                    
+                    <div class="well" style="background-color: white">
+                        <p id="mytextarea">Мои друзья смотрят фильмы каждый день</p>
+                    </div>
+                    <button type="button" id="clicker1" class="btn btn-success" onclick="normalize();">Normalize!</button>
+                    <button type="button" id="clicker2" class="btn btn-success" onclick="normalize();">Current</button>
+                    <script>
+                        $("#clicker1").click(function () {
+                            $("#mytextarea").text("Мой друг смотреть фильм каждый день");
+                        });
+                        $("#clicker2").click(function () {
+                            $("#mytextarea").text("Мои друзья смотрят фильмы каждый день");
+                        });
+                    </script>
+
+                </div>
+                <ul class="pager" style="font-size: small">
+                    <li><a href="../../home" style="color: green">Домой</a></li>
+                    <li><a href="../../naive_b/tokenization" style="color: green">Назад</a></li>
+                    <li><a href="../../naive_b/features" style="color: green">Далее</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

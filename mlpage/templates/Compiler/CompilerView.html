@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Compiler</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+    <script src="http://www.skulpt.org/static/skulpt.min.js" type="text/javascript"></script>
+    <script src="http://www.skulpt.org/static/skulpt-stdlib.js" type="text/javascript"></script>
+
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+                function outf(text) {
+                    var mypre = document.getElementById("output");
+                    mypre.innerHTML = mypre.innerHTML + text;
+                }
+
+                function builtinRead(x) {
+                    if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                            throw "File not found: '" + x + "'";
+                    return Sk.builtinFiles["files"][x];
+                }
+
+                function runit() {
+                   var prog = document.getElementById("yourcode").value;
+                   var mypre = document.getElementById("output");
+                   mypre.innerHTML = '';
+                   Sk.pre = "output";
+                   Sk.configure({output:outf, read:builtinRead});
+                   (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'mycanvas';
+                   var myPromise = Sk.misceval.asyncToPromise(function() {
+                       return Sk.importMainWithBody("<stdin>", false, prog, true);
+                   });
+                   myPromise.then(function(mod) {
+                       console.log('success');
+                   },
+                       function(err) {
+                       console.log(err.toString());
+                   });
+                }
+    </script>
+
+    <script>
+        var editor = CodeMirror.fromTextArea("editorMirror", {
+            lineNumbers: true
+        });
+
+    </script>
+
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron" style="background-color: gray">
+            <h2 style="color: orange">Компилятор</h2>
+            <div class="well" style="background-color: dimgray; border-color: gray">
+                <ul class="breadcrumb" style="background-color: gray">
+                    <li><a href="../../home" style="color: darkorange">Домой</a></li>
+                    <li class="active" style="color: yellow">Компилятор</li>
+                </ul>
+
+                <div class="well" style="background-color: dimgray; border: hidden">
+                    <form>
+                        <div class="form-group">
+                            <label for="yourcode" style="color: lightgray">Введи свой код:</label>
+                            <textarea class="form-control" id="yourcode" rows="10" style="border-color: gray; background-color: darkslategray; color: azure; 
+                                        min-width: 100%; min-height: 200px">{{start_string}}
+                            </textarea>
+                        </div>
+                    </form>
+
+                    <div class="form-group">
+                        <label for="comment" style="color: lightgray">Вывод:</label>
+                        <pre id="output" style="border-color: gray; background-color: black; color: white; min-height: 50px"></pre>
+                        <!-- If you want turtle graphics include a canvas -->
+                        <div id="mycanvas"></div>
+                        <button type="button" class="btn btn-success" onclick="runit()">
+                            <span class="glyphicon glyphicon-play" style="color: white"></span> 
+                            Запуск   
+                        </button>
+                    </div>
+                </div>
+
+                <ul class="pager" style="font-size: small">
+                    <li><a href="../../home" style="border-color: coral ;background-color: gray; color: orange">Домой</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

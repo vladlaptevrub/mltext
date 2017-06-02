@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Classifiers</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron">
+            <h2>Классификация</h2>
+            <div class="well" style="background-color: white">
+                <ul class="breadcrumb">
+                    <li><a href="../../home" style="color: limegreen">Домой</a></li>
+                    <li class="active" style="color: chartreuse">Классификация</li>
+                    <li><a href="../../naive_b/dataset" style="color: limegreen">Датасет</a></li>
+                    <li><a href="../../naive_b/tokenization" style="color: limegreen">Токенизация</a></li>
+                    <li><a href="../../naive_b/normalization" style="color: limegreen">Нормализация</a></li>
+                    <li><a href="../../naive_b/features" style="color: limegreen">Признаки</a></li>
+                    <li class="active">Классификация</a href=""></li>
+                </ul>
+
+                <h3>Решение задачи классификации текста</h3>
+                <br/>
+                <p> Выберите классификатор, который вы собираетесь использовать </p>
+                <p id="test_text" style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                        Краткое описание классификатора.
+                    </p>
+                <div class="dropdown">
+                    <button id="dropdown_classification" class="btn btn-success dropdown-toggle" type="button" 
+                            data-toggle="dropdown" style="min-width: 205px">Классификаторы
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li id="lr_click"><a href="#">Линейная Регрессия</a></li>
+                        <li id="dt_click"><a href="#">Решающие Деревья</a></li>
+                        <li id="nb_click"><a href="#">Наивный Байес</a></li>
+                        <li id="kn_click"><a href="#">K соседей</a></li>
+                        <li id="sv_click"><a href="#">SVM</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Урок "Классификаторы"</a></li>
+                    </ul>
+                </div>
+                <br>
+                <div id="form1" class="checkbox">
+                    <label><input type="checkbox" id="sw" value="">Удаление стоп-слов</label>
+                </div>
+                <div id="sw_in" class="input-group">
+                    <span class="input-group-addon">Слова:</span>
+                    <input id="sw_input" type="text" class="form-control" name="sw_input" placeholder="Пример: что, такой">
+                </div>
+
+                <br>
+
+                <div id="form2" class="checkbox">
+                    <label><input type="checkbox" id="pun" value="">Удаление знаков</label>
+                </div>
+
+                <div id="pun_in" class="input-group">
+                    <span class="input-group-addon">Знаки:</span>
+                    <input id="sym_input" type="text" class="form-control" name="sym_input" placeholder="Пример: !, ?">
+                </div>
+
+                <br>
+
+                <div id="form3" class="checkbox">
+                    <label><input type="checkbox" id="norm" value="">Приведение слов к нормальной форме</label>
+                </div>
+
+                <br>
+
+                <div class="well">
+                    <label><h3>Тестовый датасет</h3></label>
+                    <div class="well" style="max-height: 300px; overflow-y: scroll; background-color: white">
+                        <table class="table" id="data_t">
+                            <thead>
+                                <tr>
+                                    <th>Текст</th>
+                                    <th>Разметка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td contenteditable="true">Фильм Начало это качественный фильм с хорошей игрой актеров, интересным, и нигде не встречающимся сюжетом, хорошими спецэффектами и сильным звуком.</td>
+                                    <td contenteditable="true" style="color: forestgreen">G</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="true">Фильм Начало, оставил у меня только хорошие впечатления: хорошо продуманный и проработанный сюжет с очень хорошей игрой Леонардо Ди Каприо.</td>
+                                    <td contenteditable="true" style="color: forestgreen">G</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="true">Отличный фильм. Динамичный сюжет, отличная графика, есть над чем поразмышлять. На мой взгляд, один из лучших фильмов этого года. Всем рекамендую.</td>
+                                    <td contenteditable="true" style="color: forestgreen">G</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="true">Грустно. Очень грустно, что из такой шикарной идеи получилась посредственная, глупая и клишированная по самое не могу картина.</td>
+                                    <td contenteditable="true" style="color: forestgreen">B</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="true">От увиденного на душе становится печально, а порой даже и стыдно. Ведь для меня DC, их история и персонажи многое значат. Обидно видеть такое бездушное и наплевательское отношение к канонам.</td>
+                                    <td contenteditable="true" style="color: forestgreen">B</td>
+                                </tr>
+                                <tr>
+                                    <td contenteditable="true">Примитивно, банально, безвкусно. Фильм пестрит шаблонами, плоскими шутками, ни одна из которых не вспоминается после просмотра. Сюжет прямолинеен и прост, как мычание, и, несмотря на это, количество неподдающихся логике моментов, поступков персонажей зашкаливает.</td>
+                                    <td contenteditable="true" style="color: forestgreen">B</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <div class="container">
+                        <button type="button" class="btn btn-success btn-sm" id="atr_add">Добавить Атрибут</button>
+                        <button type="button" class="btn btn-success btn-sm" id="row_add">Добавить Строку</button>
+                        <button type="button" class="btn btn-danger btn-sm" id="atr_del">Удалить Атрибут</button>
+                    </div>
+
+                    </br>
+
+                    <div class="well" style="background-color: white" id="atr_cont">
+                        <div class="container">
+                            <div class="form-group">
+                                <label for="usr">Название Атрибута:</label>
+                                <input type="text" class="form-control" id="atr_in">
+                            </div>
+                            <button type="button" class="btn btn-success btn-sm" id="atr_ok">Добавить</button>
+                        </div>
+                    </div>
+
+                    <script>
+                        $("#atr_cont").hide();
+                        $("#atr_del").hide();
+                        $("#atr_add").hide();
+
+                        var index_selected;
+                        var index_old;
+                        var markup;
+                        var col_count;
+
+                        $("#atr_add").click(function () {
+                            if ($("#atr_cont").is(':hidden')) {
+                                $("#atr_cont").show();
+                            } else{
+                                $("#atr_cont").hide();
+                            }
+                        });
+
+                        $("#atr_del").click(function () {
+                            $("#data_t thead tr").each(function() {
+                                $(this).find("th:eq("+index_old+")").remove();
+                            });
+                            $("#data_t tbody tr").each(function() {
+                                $(this).find("td:eq("+index_old+")").remove();
+                            });
+                            $("#atr_del").hide();
+                        });
+
+                        $("#atr_ok").click(function () {
+                            var name = $("#atr_in").val();
+                            if (name != ""){
+                                $("#data_t tr:gt(0)").append("<td contenteditable='true'></td>");
+                                $("#data_t tr:first").append("<th>" + name + "</th>");
+                            }
+                            $("#atr_cont").hide();
+                        });
+
+                        $("#row_add").click(function () {
+                            markup = "";
+                            col_count = 0;
+                            $("#data_t thead th").each(function(){
+                                col_count += 1;
+                            });
+                            for(var i = 0; i < col_count; i++){
+                                markup += "<td contenteditable='true'></td>";
+                            }
+                            $('#data_t tr:last').after("<tr>" + markup + "</tr>");
+                        });
+
+                        $("#data_t").delegate('td,th', 'click', function() {
+                            index_selected = this.cellIndex;
+                            <!-- $("#atr_del").show(); -->
+                            $(this).closest("#data_t").find('tr').each(function() {
+                                <!-- $(this.cells[index_selected]).css("background-color", "#E3F6CE"); -->
+                                if ( index_old != index_selected){
+                                    $(this.cells[index_old]).css("background-color", 'white');
+                                }
+                            });
+                            if ( index_old != index_selected){
+                                    index_old = index_selected;
+                                }
+                        });
+                    </script>
+                    <script removeChild(this.cells[ index ]);></script>
+                </div>
+
+                <button type="button" class="btn btn-success btn-sm" id="test_res">Запуск</button>
+
+                <!-- <button type="button" class="btn btn-success btn-sm" id="test_data">Тест</button> -->
+
+                <!-- <button type="button" class="btn btn-success btn-sm" id="test_data_del">Удалить тестовые данные</button> -->
+
+                <script>
+
+                    $("#sw_in").hide();
+                    $("#pun_in").hide();
+                    $("#form1").hide();
+                    $("#form2").hide();
+                    $("#form3").hide();
+
+                    var norm = "false";
+                    var classifier = "none";
+
+                    var t_text
+                    var t_label
+
+                    $("#test_data").click(function(){
+                        $.ajax({
+                            type: 'POST',
+                            url: '../../naive_b/delete_test_data/',
+                            data: {
+                                action: 'delete',
+                            },
+                            success: function(){
+                                $('#data_t tbody tr').each(function (i, el) {
+                                    t_text = $(this).find("td:first-child").html();
+                                    t_label = $(this).find("td:last-child").html();
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '../../naive_b/post_test_data/',
+                                        data: {
+                                            string: t_text,
+                                            label: t_label,
+                                        },
+                                        error: function(){
+                                            alert("ERROR");
+                                        }
+                                    });
+                                });
+                                alert('SUCCESS');
+                            },
+                            error: function(){
+                                alert("ERROR: can't delete data");
+                            }
+                        });
+                    });
+
+                    $("#test_data_del").click(function(){
+                        $.ajax({
+                            type: 'POST',
+                            url: '../../naive_b/delete_test_data/',
+                            data: {
+                                action: 'delete',
+                            },
+                            success: function(){
+                                alert('SUCCESS');
+                            },
+                            error: function(){
+                                alert("ERROR");
+                            }
+                        });
+                    });
+
+                    $("#test_res").click(function(){
+                        $.ajax({
+                            type: 'POST',
+                            url: '../../naive_b/test/',
+                            data: {
+                                stop_words: $("#sw_input").val(),
+                                symbols: $("#sym_input").val(),
+                                norm_form: norm,
+                                class_name: classifier,
+                            },
+                            success: function(newOrder){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '../../naive_b/delete_test_data/',
+                                    data: {
+                                        action: 'delete',
+                                    },
+                                    success: function(){
+                                        $('#data_t tbody tr').each(function (i, el) {
+                                            t_text = $(this).find("td:first-child").html();
+                                            t_label = $(this).find("td:last-child").html();
+
+                                            $.ajax({
+                                                type: 'POST',
+                                                url: '../../naive_b/post_test_data/',
+                                                data: {
+                                                    string: t_text,
+                                                    label: t_label,
+                                                },
+                                                error: function(){
+                                                    alert("ERROR");
+                                                }
+                                            });
+                                        });
+                                        alert('SUCCESS');
+                                        window.location.replace("../../naive_b/result");
+                                    },
+                                    error: function(){
+                                        alert("ERROR: can't delete data");
+                                    }
+                                });
+                            },
+                            error: function(){
+                                alert("ERROR");
+                            }
+                        });
+                    });
+
+                    $("#lr_click").click(function(){
+                        $("#test_text").text("Линейная Регрессия");
+                        classifier = "linreg";
+                        $("#dropdown_classification").text("Линейная Регрессия");
+                        $("#form1").show();
+                        $("#form2").show();
+                        $("#form3").show();
+                    });
+                    $("#dt_click").click(function(){
+                        $("#test_text").text("Решающие Деревья");
+                        classifier = "dtrees";
+                        $("#dropdown_classification").text("Решающие Деревья");
+                        $("#form1").show();
+                        $("#form2").show();
+                        $("#form3").show();
+                    });
+                    $("#nb_click").click(function(){
+                        $("#test_text").text("Наивный Байес");
+                        classifier = "nb";
+                        $("#dropdown_classification").text("Наивный Байес");
+                        $("#form1").show();
+                        $("#form2").show();
+                        $("#form3").show();
+                    });
+                    $("#kn_click").click(function(){
+                        $("#test_text").text("K соседей");
+                        classifier = "knn";
+                        $("#dropdown_classification").text("K соседей");
+                        $("#form1").show();
+                        $("#form2").show();
+                        $("#form3").show();
+                    });
+                    $("#sv_click").click(function(){
+                        $("#test_text").text("SVM");
+                        classifier = "svm";
+                        $("#dropdown_classification").text("SVM");
+                        $("#form1").show();
+                        $("#form2").show();
+                        $("#form3").show();
+                    });
+
+                    $("#sw").change(function () {
+                        if ($("#sw").is(":checked")) {
+                            $("#sw_in").show();
+                        }
+                        else{
+                            $("#sw_in").hide();
+                        }
+                    });
+
+                    $("#pun").change(function () {
+                        if ($("#pun").is(":checked")) {
+                            $("#pun_in").show();
+                        }
+                        else{
+                            $("#pun_in").hide();
+                        }
+                    });
+
+                    $("#norm").change(function(){
+                        if (norm == "false"){
+                            norm = "true";
+                        }
+                        else{
+                            norm = "false";
+                        }
+                    })
+                </script>
+
+                <ul class="pager" style="font-size: small">
+                    <li><a href="../../home" style="color: green">Домой</a></li>
+                    <li><a href="../../naive_b/features" style="color: green">Назад</a></li>
+                    <li><a href="../../naive_b/result" style="color: green">Далее</a></li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

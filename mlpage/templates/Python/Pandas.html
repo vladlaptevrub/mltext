@@ -1,0 +1,356 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pandas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron">
+            <h2>Pandas</h2>
+            <div class="well" style="background-color: white">
+                <ul class="breadcrumb">
+                    <li><a href="../../home" style="color: limegreen">Домой</a></li>
+                    <li class="active" style="color: chartreuse">Python</li>
+                    <li><a href="../../python/introduction" style="color: limegreen">Вступление</a></li>
+                    <li class="active"><a href="../../python/hello" style="color: limegreen">Hello, World!</a></li>
+                    <li class="active">Pandas</li>
+                </ul>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Сейчас речь пойдет о пакете Pandas. Данный пакет делает Python мощным инструментом для анализа данных. 
+                    Пакет дает возможность строить сводные таблицы, выполнять группировки, предоставляет удобный доступ к 
+                    табличным данным, а при наличии пакета matplotlib дает возможность рисовать графики на полученных наборах данных. 
+                    Далее будут показаны основы работы с пакетом, такие как загрузка данных, обращение к полям, фильтрация и построение сводных.<br>
+
+                    <h4>Основные структуры данных и их загрузка</h4>
+
+                    Для начала, скажем, пару слов о структурах хранения данных в Pandas. Основными являются Series и DataFrame.<br>
+                    Series – это проиндексированный одномерный массив значений. Он похож на простой словарь типа dict, где имя элемента 
+                    будет соответствовать индексу, а значение – значению записи.<br>
+                    DataFrame — это проиндексированный многомерный массив значений, соответственно каждый столбец DataFrame, является структурой Series.<br>
+                    Итак, со структурами чуток разобрались. Перейдем непосредственно к работе с пакетом. Для начала анализа каких-либо данных их надо загрузить. 
+                    Pandas предоставляет широкий выбор источников данных, например:<br>
+                    <ul>
+                        <li>
+                            SQL
+                        </li>
+                        <li>
+                            Текстовые файлы
+                        </li>
+                        <li>
+                            Excel файлы
+                        </li>
+                        <li>
+                            HTML
+                        </li>
+                    </ul>
+
+                    Подробней о них можно прочитать в документации.<br>
+                    Для пример загрузим 2 текстовых файла. Это можно сделать функцией read_csv():
+                </p>
+                <pre style="background:#200020;color:#d0d0ff"><span style="color:#80a0ff">from</span> pandas <span style="color:#80a0ff">import</span> read_csv
+df1 <span style="color:#a0a0ff">=</span> read_csv<span style="color:#805080">(</span><span style="color:#999"><span style="color:#805080">"</span>df1.txt<span style="color:#805080">"</span></span><span style="color:#805080">)</span>
+df2 <span style="color:#a0a0ff">=</span> read_csv<span style="color:#805080">(</span><span style="color:#999"><span style="color:#805080">"</span>df2.txt<span style="color:#805080">"</span></span>,<span style="color:#999"><span style="color:#805080">"</span>;<span style="color:#805080">"</span></span><span style="color:#805080">)</span>  <span style="color:#805080">#</span>второй аргумент задает разделитель
+</pre>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Теперь у нас есть 2 набора данных df1, содержащий магазины и количество отгрузок:
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>shop</th>
+                            <th>qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>427</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>707</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>957</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>437</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    И df2, содержащий магазин и его город:
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>shop</th>
+                            <th>name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>347</td>
+                            <td>Киев</td>
+                        </tr>
+                        <tr>
+                            <td>427</td>
+                            <td>Самара</td>
+                        </tr>
+                        <tr>
+                            <td>707</td>
+                            <td>Минск</td>
+                        </tr>
+                        <tr>
+                            <td>957</td>
+                            <td>Иркутск</td>
+                        </tr>
+                        <tr>
+                            <td>437</td>
+                            <td>Москва</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    <h4>Базовые операции с наборами данных</h4>
+
+                    Над наборами данных можно выполнять различные действия, например объединение, добавление столбцов, 
+                    добавление записей, фильтрация, построение сводных и другие. Давайте теперь, чтобы 
+                    продемонстрировать все описанные выше возможности, следующие задачи:<br>
+                    <ul>
+                        <li>
+                            в набор с городами магазинов добавим поле `country` и заполним соответствующими странами
+                        </li>
+                        <li>
+                            выберем украинский магазин и поменяем его номер
+                        </li>
+                        <li>
+                            добавим магазин, полученный на предыдущем шаге, к общему списку
+                        </li>
+                        <li>
+                            добавим количество из df1 к набору df2
+                        </li>
+                        <li>
+                            построим сводную таблицу по странам и количеству отгрузок
+                        </li>
+                    </ul>
+                    <br>
+                    Итак, для добавления нового столбца в набор данных существует команда insert(): 
+                </p>
+                <pre style="background:#200020;color:#d0d0ff">country <span style="color:#a0a0ff">=</span> <span style="color:#805080">[</span><span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>Украина<span style="color:#805080">'</span></span><span style="color:#805080">,</span><span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>РФ<span style="color:#805080">'</span></span><span style="color:#805080">,</span><span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>Беларусь<span style="color:#805080">'</span></span><span style="color:#805080">,</span><span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>РФ<span style="color:#805080">'</span></span><span style="color:#805080">,</span><span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>РФ<span style="color:#805080">'</span></span><span style="color:#805080">]</span>
+df2.insert<span style="color:#805080">(</span><span style="color:#7090b0">1</span>,<span style="color:#999"><span style="color:#805080">'</span>country<span style="color:#805080">'</span></span>,country<span style="color:#805080">)</span> 
+</pre>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    В нашем случае функции передается 3 аргумент:<br>
+                    <ul>
+                        <li>
+                            номер позиции, куда будет вставлен новый столбец
+                        </li>
+                        <li>
+                            имя нового столбца
+                        </li>
+                        <li>
+                            массив значений столбца (в нашем случае, это обычный список list)
+                        </li>
+                    </ul>
+
+                    Вид df2 после выполнения выше описанных операций:
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>shop</th>
+                            <th>country</th>
+                            <th>name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>347</td>
+                            <td>Украина</td>
+                            <td>Киев</td>
+                        </tr>
+                        <tr>
+                            <td>427</td>
+                            <td>РФ</td>
+                            <td>Самара</td>
+                        </tr>
+                        <tr>
+                            <td>707</td>
+                            <td>Беларусь</td>
+                            <td>Минск</td>
+                        </tr>
+                        <tr>
+                            <td>957</td>
+                            <td>РФ</td>
+                            <td>Иркутск</td>
+                        </tr>
+                        <tr>
+                            <td>437</td>
+                            <td>РФ</td>
+                            <td>Москва</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Теперь на надо выбрать магазин, у которого страна будет равна `Украина`. Для обращения к столбцам в 
+                    DataFrame существует 2 способа:<br>
+                    <ul>
+                        <li>
+                            через точку — НаборДанных.ИмяПоля
+                        </li>
+                        <li>
+                            в квадратных скобках – НаборДанных[‘ИмяПоля’]
+                        </li>
+                    </ul>
+
+                    Для того, чтобы отфильтровать набор данных можно использовать квадратные скобки 
+                    внутри которых будет условие НаборДанных[условие]. Условие должно содержать имена 
+                    полей, в формате описанном выше, и условие, налагаемое на них. Таким образом выбрать 
+                    брать интересующий магазин и заменить его номер можно так:
+                </p>
+                <pre style="background:#200020;color:#d0d0ff">t <span style="color:#a0a0ff">=</span> df2<span style="color:#805080">[</span>df2.country <span style="color:#a0a0ff">==</span> <span style="color:#999"><span style="color:#b0fff0">u</span><span style="color:#805080">'</span>Украина<span style="color:#805080">'</span></span><span style="color:#805080">]</span>
+t.shop <span style="color:#a0a0ff">=</span> <span style="color:#7090b0">345</span>
+</pre>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Результатом выполнения данного кода, будет новый промежуточный набор данных t, содержащий одну запись:
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>shop</th>
+                            <th>country</th>
+                            <th>name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>345</td>
+                            <td>Украина</td>
+                            <td>Киев</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    Для того чтобы добавить полученную на предыдущем шаге запись, нужно 
+                    выполнить функцию append(), в качестве аргумента которой передается набор 
+                    данных, который нужно добавить к исходному:
+                </p>
+                <pre style="background:#200020;color:#d0d0ff">df2 <span style="color:#a0a0ff">=</span> df2.append<span style="color:#805080">(</span>t<span style="color:#805080">)</span>
+</pre>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    <h4>Агрегация данных</h4>
+
+                    Теперь к нашему основному списку магазинов df2, можно подтянуть количество из набора данных df1. 
+                    Сделать это можно с помощью функции merge(), которая соединяет два набора данных (аналог join в SQL):
+                </p>
+                <pre style="background:#200020;color:#d0d0ff">res <span style="color:#a0a0ff">=</span> df2.merge<span style="color:#805080">(</span>df1, <span style="color:#999"><span style="color:#805080">'</span>left<span style="color:#805080">'</span></span>, <span style="color:#80b0b0">on</span><span style="color:#a0a0ff">=</span><span style="color:#999"><span style="color:#805080">'</span>shop<span style="color:#805080">'</span></span><span style="color:#805080">)</span>
+</pre>
+                <p style="font-family:'Times New Roman', Times, serif; font-size:medium">
+                    В качестве параметров функция принимает:<br>
+                    <ul>
+                        <li>
+                            набор данных (который будет присоединен к исходному)
+                        </li>
+                        <li>
+                            тип соединения
+                        </li>
+                        <li>
+                            поле, по которому происходит соединение
+                        </li>
+                    </ul>
+
+                    Подробнее о параметрах можно прочитать в документации. Набор данных перед финальной операцией выглядит так:
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>shop</th>
+                            <th>country</th>
+                            <th>name</th>
+                            <th>qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>347</td>
+                            <td>Украина</td>
+                            <td>Киев</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <td>427</td>
+                            <td>РФ</td>
+                            <td>Самара</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>707</td>
+                            <td>Беларусь</td>
+                            <td>Минск</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>957</td>
+                            <td>РФ</td>
+                            <td>Иркутск</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>437</td>
+                            <td>РФ</td>
+                            <td>Москва</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>345</td>
+                            <td>Украина</td>
+                            <td>Киев</td>
+                            <td>NaN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="container">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100" style="width:100%; background-color: limegreen">
+                        <p style="font-family:ArcadeClassic; font-size: small">PROGRESS</p>
+                    </div>
+                </div>
+            </div>
+            <ul class="pager" style="font-size: small">
+                <li><a href="../../python/hello" style="color: green">Назад</a></li>
+                <li><a href="../../home" style="color: green">Домой</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

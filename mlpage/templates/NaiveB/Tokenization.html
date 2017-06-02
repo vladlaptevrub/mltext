@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" charset="UTF-8" />
+    <title>Tokenization</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap2/bootstrap-switch.min.css">
+
+
+    <style>
+        .section a {
+            color: black;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        .title-text {
+            color: black;
+            text-align: left;
+        }
+
+        .text {
+            color: black;
+            text-align: left;
+        }
+
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="container" style="position: absolute; top: 0; left: 20%; width: 60%;">
+        <div class="jumbotron">
+            <h2>Классификация</h2>
+            <div class="well" style="background-color: white">
+                <ul class="breadcrumb">
+                    <li><a href="../../home" style="color: limegreen">Домой</a></li>
+                    <li class="active" style="color: chartreuse">Классификация</li>
+                    <li><a href="../../naive_b/dataset" style="color: limegreen">Датасет</a></li>
+                    <li class="active">Токенизация</li>
+                    <li><a href="../../naive_b/normalization" style="color: limegreen">Нормализация</a></li>
+                    <li><a href="../../naive_b/features" style="color: limegreen">Признаки</a></li>
+                    <li><a href="../../naive_b/classifications" style="color: limegreen">Классификаторы</a></li>
+                    <li><a href="../../naive_b/result" style="color: limegreen">Результат</a></li>
+                </ul>
+
+                <div class="well" style="min-height: 300px">
+
+                    <h3>Токенизация</h3>
+
+                    <div class="well" style="background-color: white; font-family:'Times New Roman', Times, serif; font-size:medium">Токенизация — это разбиение текста на более мелкие части, токены. К токенам относятся как слова, так и знаки пунктуации. Достаточно часто стоит задача представить текст в виде массива значимых слов. Тогда после токенизации необходимо произвести чистку на предмет знаков пунктуации и незначимых слов (например предлогов). Почти всегда в задачах обработки естественного языка ставится такая задача.</div>
+                
+                    <div class="well" style="background-color: #0B610B; min-height: 130px">
+                        <label id="mytextarea" style="font-family: 'Arial'; font-size: medium; color: #D8F781">Текст на входе:</label>
+                        <p id="mytextarea" style="font-family: 'Times New Roman'; color: white">Хочу понять, что такое токенизация. )</p>
+                        <label id="mytextarea" style="font-family: 'Arial'; font-size: medium; color: #D8F781">Массив токенов:</label>
+                        <div class="well" style="background-color: white; min-height: 85px">
+                            <p id="mytextarea2" style="color: green">{}</p>
+                        </div>
+                    </div>
+
+                    <div style="display: inline; font-size: medium;">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-success btn-xs active">
+                            <input type="radio" name="options" id="t_off"> Off
+                          </label>
+                          <label class="btn btn-success btn-xs">
+                            <input type="radio" name="options" id="t_on" checked="true"> On
+                          </label>
+                        </div>
+                        <label>
+                            Разбиение на токены
+                        </label>
+                    </div>
+
+                    </br></br>
+
+                    <div style="display: inline; font-size: medium;" id="w_div">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-success btn-xs active">
+                            <input type="radio" name="options" id="w_off"> Off
+                          </label>
+                          <label class="btn btn-success btn-xs">
+                            <input type="radio" name="options" id="w_on" checked="true"> On
+                          </label>
+                        </div>
+                        <label>
+                            Удаление незначимых слов
+                        </label>
+                    </div>
+
+                    </br></br>
+
+                    <div style="display: inline; font-size: medium;" id="s_div">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-success btn-xs active">
+                            <input type="radio" name="options" id="s_off"> Off
+                          </label>
+                          <label class="btn btn-success btn-xs">
+                            <input type="radio" name="options" id="s_on" checked="true"> On
+                          </label>
+                        </div>
+                        <label>
+                            Удаление лишних символов
+                        </label>
+                    </div>
+
+                    </br></br>
+
+                    <div style="display: inline; font-size: medium;" id="p_div">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-success btn-xs active">
+                            <input type="radio" name="options" id="p_off"> Off
+                          </label>
+                          <label class="btn btn-success btn-xs">
+                            <input type="radio" name="options" id="p_on" checked="true"> On
+                          </label>
+                        </div>
+                    <label>
+                        Удаление знаков пунктуации
+                    </label>
+                    </div>
+
+                    <script>
+                        var is_t = false;
+                        var is_w = false;
+                        var is_s = false;
+                        var is_p = false;
+
+                        $("#w_div").hide();
+                        $("#s_div").hide();
+                        $("#p_div").hide();
+
+                        $("#t_on, #t_off").change(function () {
+                            if ($("#t_on").is(":checked"))  {
+                                is_t = true;
+
+                                $("#w_div").show();
+                                $("#s_div").show();
+                                $("#p_div").show();
+
+
+                                if(is_w == true){
+
+                                    if(is_s == true){
+                                        if(is_p == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.'}");
+                                        }
+                                    } else if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация', ')'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.', ')'}");
+                                    }
+
+                                } else if(is_s == true){
+                                    if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.'}");
+                                    }
+                                } else if(is_p == true){
+                                    $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация', ')'}");
+                                } else{
+                                    $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.', ')'}");
+                                }
+                                
+                            }
+
+                            else if ($("#t_off").is(":checked")) {
+                                is_t = false;
+
+                                $("#w_div").hide();
+                                $("#s_div").hide();
+                                $("#p_div").hide();
+
+                                $("#mytextarea2").text("{}");
+                            }
+                        });
+
+                        $("#s_on, #s_off").change(function () {
+                            if ($("#s_on").is(":checked")) {
+                                is_s = true;
+
+                                if(is_t == true){
+                                    if(is_w == true){
+                                        if(is_p == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.'}");
+                                        }
+
+                                    } else if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.'}");
+                                    }
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+
+                            else if ($("#s_off").is(":checked")) {
+                                is_s = false;
+
+                                if(is_t == true){
+                                    if(is_w == true){
+                                        if(is_p == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация', ')'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.', ')'}");
+                                        }
+
+                                    } else if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация', ')'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.', ')'}");
+                                    }
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+                        }); 
+
+                        $("#w_on, #w_off").change(function () {
+                            if ($("#w_on").is(":checked")) {
+                                is_w = true;
+                                
+                                if(is_t == true){
+
+                                    if(is_s == true){
+                                        if(is_p == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.'}");
+                                        }
+                                    } else if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация', ')'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.', ')'}");
+                                    }
+
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+
+                            else if ($("#w_off").is(":checked")) {
+                                is_w = false;
+                                
+                                if(is_t == true){
+
+                                    if(is_s == true){
+                                        if(is_p == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.'}");
+                                        }
+                                    } else if(is_p == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация', ')'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.', ')'}");
+                                    }
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+                        }); 
+
+                        $("#p_on, #p_off").change(function () {
+                            if ($("#p_on").is(":checked")) {
+                                is_p = true;
+
+                                if(is_t == true){
+
+                                    if(is_w == true){
+
+                                        if(is_s == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять', 'такое', 'токенизация', ')'}");
+                                        }
+
+                                    } else if(is_s == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять', 'что', 'такое', 'токенизация', ')'}");
+                                    }
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+
+                            else if ($("#p_off").is(":checked")) {
+                                is_p = false;
+                                
+                                if(is_t == true){
+
+                                    if(is_w == true){
+
+                                        if(is_s == true){
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.'}");
+                                        } else{
+                                            $("#mytextarea2").text("{'Хочу', 'понять,', 'такое', 'токенизация.', ')'}");
+                                        }
+
+                                    } else if(is_s == true){
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.'}");
+                                    } else{
+                                        $("#mytextarea2").text("{'Хочу', 'понять,', 'что', 'такое', 'токенизация.', ')'}");
+                                    }
+                                } else{
+                                    $("#mytextarea2").text("{}");
+                                }
+                            }
+                        });         
+                        
+                    </script>
+
+                </div>
+                
+                <ul class="pager" style="font-size: small">
+                    <li><a href="../../home" style="color: green">Домой</a></li>
+                    <li><a href="../../naive_b/dataset" style="color: green">Назад</a></li>
+                    <li><a href="../../naive_b/normalization" style="color: green">Далее</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
